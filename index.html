@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin:0;
+				padding: 0;
+			}
+			.jdcommentbox{
+				padding:10px 10px;
+			}
+			.jdcomment{
+				width:100%;
+				border-bottom: 1px dotted #CCCCCC;
+				overflow: hidden;
+			}
+			.jdleft{
+				width:140px;
+				float: left;
+				padding:20px 10px;
+			}
+			.userimg{
+				width:25px;
+				height:25px;
+				margin:5px;
+			}
+			.jdright{
+				float:left;
+				width:810px;
+				list-style: none;
+				padding-bottom: 8px;
+			}
+			.userimg{
+				float: left;
+				border-radius: 50%;
+			}
+			.goodimgbox img{
+				width:52px;
+				height: 52px;
+				border:1px solid #ccc;
+				margin-bottom: 5px;
+			}
+			.nickname{
+				float: left;
+				font-size: 12px;
+				color: #666;
+				line-height: 38px;
+			}
+			.user_level{
+				font-size: 12px;
+				color:#e1a10a;
+			}
+			.usercomm{
+				font-size: 14px;
+				padding: 8px 0;
+				line-height: 180%;
+				color: #333;
+			}
+			.commtime{
+				margin-right: 20px;
+				color: #999;
+				font-size: 12px;
+			}
+			.userinfo{
+				overflow: hidden;
+				line-height: 38px;
+			}
+			.goodscore{
+				height: 16px;
+				background: url(img/ui_psorce.png) 0 -16px;
+				margin-top:10px;
+			}
+		</style>
+		<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+	</head>
+	<body>
+		<div class="jdcommentbox">
+			<!--<div class="jdcomment">
+				<div class="jdleft">
+					<div class="userinfo">	
+						<img class="userimg" src="" alt="" />
+						<span class="nickname">盛夏</span>
+					</div>
+					<p class="user_level">钻石会员</p>
+				</div>
+				<ul class="jdright">
+					<li>
+						<div class="goodscore"></div>
+						<div class="usercomm">好用</div>
+						<div class="goodimgbox">
+							<img class="goodimg" src="" alt="" />
+						</div>
+						<span class="commtime">2017</span>
+					</li>
+				</ul>
+			</div>-->
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(function(){
+			$.ajax({
+				type:"get",
+				url:"https://club.jd.com/discussion/getProductPageImageCommentList.action?productId=" + "1085328",
+				async:true,
+				dataType:"jsonP",
+				success:function(res){
+					$.each(res.imgComments, function(i,v) {
+						$.each(v, function(j,va) {
+							console.log(va["commentVo"]["score"])
+//							console.log(va["commentVo"]["userImageUrl"]);
+//							console.log(va["commentVo"]["referenceTime"]);
+//							console.log(va["commentVo"]["nickname"]);
+//							console.log(va["commentVo"]["userLevelName"]);
+//							console.log(va["commentVo"]["userClientShow"]);
+//							console.log(va["imageUrl"]);
+////							console.log(va["commentVo"]);
+//							console.log(va["commentVo"]["content"]);
+//							$.each(va["commentVo"],function(k,vb){
+//								console.log(k);
+////								console.log(vb);
+//							})
+							var $jdcomment = $("<div class='jdcomment'></div>");
+							var $jdleft = $("<div class='jdleft'></div>");
+							var $userinfo = $("<div class='userinfo'></div>");
+							var $userimg = $("<img class='userimg' />");
+							var $nickname = $("<span class='nickname'></span>");
+							var $user_level = $("<p class='user_level'></p>");
+							
+							$jdcomment.appendTo($(".jdcommentbox"));
+							$jdleft.appendTo($jdcomment);
+							$userinfo.appendTo($jdleft);
+							$userimg.appendTo($userinfo);
+							$nickname.appendTo($userinfo);
+							$user_level.appendTo($jdleft);
+							
+							$userimg.attr("src","//" + va["commentVo"]["userImageUrl"])
+							$nickname.html(va["commentVo"]["nickname"]);
+							$user_level.html(va["commentVo"]["userLevelName"]);
+							
+							var $jdright = $("<ul class='jdright'></ul>");
+							
+							var $li = $("<li></li>");
+							var $goodscore = $("<div class='goodscore'></div>");
+							var $usercomm = $("<div class='usercomm'></div>");
+							var $goodimgbox = $("<div class='goodimgbox'></div>");
+							var $goodimg = $("<img class='goodimg' />");
+							var $commtime = $("<span class='commtime'></span>");
+							
+							$jdright.appendTo($jdcomment);
+							$li.appendTo($jdright);
+							$goodscore.appendTo($li);
+							$usercomm.appendTo($li);
+							$goodimgbox.appendTo($li);
+							$goodimg.appendTo($goodimgbox);
+							$commtime.appendTo($li);
+							
+							var $w = va["commentVo"]["score"];
+							$goodscore.css({"width":$w * 17 + "px"});
+							$usercomm.html(va["commentVo"]["content"]);
+							$goodimg.attr("src",va["imageUrl"])
+							$commtime.html(va["commentVo"]["referenceTime"]);
+						});
+					});
+				},
+				error:function(res){
+					console.log("出现问题");
+				}
+			});
+		})
+	</script>
+</html>
